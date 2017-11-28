@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Nikon Eksperten - @ViewBag.Title</title>
+    <link href="~/Content/CSS/main-columns.css" rel="stylesheet" />
+    <link href="~/Content/CSS/main.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>
+                <span>NIKON</span> experten
+            </h1>
+        </div>
+    </header>
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#">Hjem</a></li>
+                <li><a href="#">Produkter</a></li>
+                <li><a href="#">Om os</a></li>
+                <li><a href="#">Kontakt</a></li>
+            </ul>
+            <div class="clearFix"></div>
+        </div>
+    </nav>
+    <main>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+    <footer>
+        <div class="container">
+            &copy; @DateTime.Now.Year by NIKON experten
+        </div>
+    </footer>
+</body>
+</html>
