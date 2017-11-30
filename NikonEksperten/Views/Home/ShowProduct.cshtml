@@ -1,0 +1,79 @@
+﻿@model ProductVM
+@{
+    ViewBag.Title = "Vis Produkt: " + Model.Product.Name;
+}
+
+
+<div class="row">
+    <div class="col-12">
+        <h2>@Model.Product.Name</h2>
+    </div>
+    <div class="col-2">
+        Søgning
+    </div>
+    <div class="col-10">
+        <div class="productDetailItem">
+            <div class="row">
+                <div class="col-12">
+                    <h3>
+                        @Model.Product.Name
+                    </h3>
+                </div>
+                <div class="col-6">
+                    <p>
+                        @Html.Raw(Model.Product.Description.Replace("\n","<br />"))
+                    </p>
+                    <table>
+                        <tr>
+                            <td>Varenummer:</td>
+                            <td>@Model.Product.ID</td>
+                        </tr>
+                        <tr>
+                            <td>Pris:</td>
+                            <td>@Model.Product.Price</td>
+                        </tr>
+                        <tr>
+                            <td>Leveringstid:</td>
+                            <td>2-3 Dage</td>
+                        </tr>
+                        <tr>
+                            <td>Producent:</td>
+                            <td>@Model.Manufacture.Name</td>
+                        </tr>
+                        <tr>
+                            <td>Lagerstatus:</td>
+                            <td>
+                                @switch (Model.GetStatus())
+                                {
+                                    case ProductVM.StorageStatus.inSupply:
+                                        <span class="inSupply">På Lager</span>
+                                        break;
+                                    case ProductVM.StorageStatus.shortSupply:
+                                        <span class="shortSupply">Få på lager</span>
+                                        break;
+                                    case ProductVM.StorageStatus.noSupply:
+                                        <span class="noSupply">Ingen på lager</span>
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Lager antal:</td>
+                            <td>@Model.Product.StorageAmount</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-6">
+                    <img class="img-responsive" src="~/Content/Images/Products/@Model.Product.Image" alt="@Model.Product.Name" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <a href="/Home/ProductList/@Model.Product.CategoryID">[Tilbage til @Model.Category.Name Kategorien]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

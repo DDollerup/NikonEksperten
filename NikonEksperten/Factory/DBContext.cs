@@ -10,6 +10,7 @@ namespace NikonEksperten.Factory
     {
         private AutoFactory<Product> productFactory;
         private AutoFactory<Category> categoryFactory;
+        private AutoFactory<Manufacture> manufactureFactory;
 
         public AutoFactory<Product> ProductFactory
         {
@@ -31,6 +32,17 @@ namespace NikonEksperten.Factory
                     categoryFactory = new AutoFactory<Category>();
                 }
                 return categoryFactory;
+            }
+        }
+        public AutoFactory<Manufacture> ManufactureFactory
+        {
+            get
+            {
+                if (manufactureFactory == null)
+                {
+                    manufactureFactory = new AutoFactory<Manufacture>();
+                }
+                return manufactureFactory;
             }
         }
     }

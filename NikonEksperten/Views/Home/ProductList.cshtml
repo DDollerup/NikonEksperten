@@ -1,11 +1,11 @@
-﻿@model List<Product>
+﻿@model List<ProductVM>
 @{
     ViewBag.Title = "ProductList";
 }
 
 <div class="row">
     <div class="col-12">
-        <h2>Kategoriens Navn</h2>
+        <h2>@ViewBag.CategoryName</h2>
     </div>
     <div class="col-2">
         Søgning
@@ -13,25 +13,25 @@
     <div class="col-10">
         <div class="row">
             <div class="col-12">
-                @foreach (Product product in Model)
+                @foreach (ProductVM pvm in Model)
                 {
                     <div class="productListItem">
                         <div>
-                            @product.Name
+                            @pvm.Product.Name
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <img src="~/Content/Images/Products/@product.Image" class="img-responsive" />
+                                <img src="~/Content/Images/Products/@pvm.Product.Image" class="img-responsive" />
                             </div>
                             <div class="col-3">
                                 <table>
                                     <tr>
                                         <td>Varenummer</td>
-                                        <td>@product.ID</td>
+                                        <td>@pvm.Product.ID</td>
                                     </tr>
                                     <tr>
                                         <td>Pris</td>
-                                        <td>@product.Price</td>
+                                        <td>@pvm.Product.Price</td>
                                     </tr>
                                     <tr>
                                         <td>Leveringstid</td>
@@ -42,8 +42,8 @@
                             <div class="col-3">
                                 <table>
                                     <tr>
-                                        <td>Producdent</td>
-                                        <td>@product.ManufactureID</td>
+                                        <td>Producent</td>
+                                        <td>@pvm.Manufacture.Name</td>
                                     </tr>
                                     <tr>
                                         <td>Tilbud</td>
@@ -51,13 +51,15 @@
                                     </tr>
                                     <tr>
                                         <td>Lager antal:</td>
-                                        <td>@product.StorageAmount</td>
+                                        <td>@pvm.Product.StorageAmount</td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-3">
                                 <div>
-                                    Se Mere
+                                    <div class="@pvm.GetStatus()">
+                                    </div>
+                                    <a href="/Home/ShowProduct/@pvm.Product.ID">Se Mere</a>
                                 </div>
                             </div>
                         </div>
