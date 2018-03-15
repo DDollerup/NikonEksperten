@@ -7,7 +7,7 @@
  - You are free to use this as you please   -
  - as long as you credit Proper Dog ApS     -
  -                                          -
- - Latest Update: 30-10-2017                -
+ - Latest Update: 18-12-2017                -
  --------------------------------------------
  */
 
@@ -437,7 +437,7 @@ public class AutoFactory<T>
             {
                 sqlQuery += " OR ";
             }
-        } 
+        }
         #endregion
 
         // We open a connection with the current connectionstring
@@ -536,7 +536,7 @@ public class AutoFactory<T>
             {
                 sqlQuery += " OR ";
             }
-        } 
+        }
         #endregion
 
         // We open a connection with the current connectionstring
@@ -650,8 +650,91 @@ public class AutoFactory<T>
             {
                 sqlQuery += " OR ";
             }
-        } 
+        }
         #endregion
+
+        // We open a connection with the current connectionstring
+        SqlConnection connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        // Generating the Sql Command to run on the database
+        SqlCommand cmd = new SqlCommand(sqlQuery, connection);
+
+        // Creating a Reader to contain the _response_ from the database
+        SqlDataReader reader = cmd.ExecuteReader();
+
+        // Creating a entity holder object to hold the response from the database
+        T entity = default(T);
+
+        // Creating a result list to hold the _responses_ from the database
+        List<T> result = new List<T>();
+
+        // Does the server got a respond for us?
+        if (reader.HasRows)
+        {
+            // As long as there is rows to read, do this
+            while (reader.Read())
+            {
+                // Creating the Entity object, it can now be used to set data
+                entity = GetGenericType();
+                // Loops through the properties of the current type
+                for (int i = 0; i < properties.Count; i++)
+                {
+                    // If the value from the database is Null, we continue
+                    if (reader[i] == DBNull.Value) continue;
+                    // Setting the property value as the value from the database
+                    properties[i].SetValue(entity, reader[i], null);
+                }
+                // Adding the entity to the List and continuing to the next field
+                result.Add(entity);
+            }
+        }
+
+        // disposning and closing connection
+        cmd.Dispose();
+        connection.Dispose();
+        connection.Close();
+
+        // returning result
+        return result;
+    }
+
+    /// <summary>
+    /// Gets all elements from table that matches requirements.
+    /// </summary>
+    /// <param name="value">The search parameter</param>
+    /// <param name="filters">filters you wish to add to your search</param>
+    /// <param name="fields">The fields in the table you wish to include</param>
+    /// <returns>List of elements from table that matches the value, filters and fields</returns>
+    public List<T> SearchByFilter(object value, string[] filters, params string[] fields)
+    {
+        // Creating the SELECT SQL Statement, with {0} as Table name
+        string sqlQuery = string.Format("SELECT * FROM [{0}] WHERE (", typeof(T).Name);
+
+
+        // Adding filters to the SQL Statement
+        for (int i = 0; i < filters.Length; i++)
+        {
+            sqlQuery += "(" + filters[i] + ")";
+            if (i + 1 < filters.Length)
+            {
+                sqlQuery += " AND ";
+            }
+        }
+
+        sqlQuery += " AND (";
+
+        // Adding fields to the SQL statement
+        for (int i = 0; i < fields.Length; i++)
+        {
+            sqlQuery += string.Format("([{0}] LIKE '%{1}%')", fields[i], value);
+            if (i + 1 < fields.Length)
+            {
+                sqlQuery += " OR ";
+            }
+        }
+
+        sqlQuery += "))";
 
         // We open a connection with the current connectionstring
         SqlConnection connection = new SqlConnection(connectionString);

@@ -8,62 +8,77 @@
         <h2>@ViewBag.CategoryName</h2>
     </div>
     <div class="col-2">
-        Søgning
+        @Html.Action("Search", "Home")
     </div>
     <div class="col-10">
         <div class="row">
             <div class="col-12">
-                @foreach (ProductVM pvm in Model)
+                @if (Model.Count > 0)
                 {
-                    <div class="productListItem">
-                        <div>
-                            @pvm.Product.Name
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
-                                <img src="~/Content/Images/Products/@pvm.Product.Image" class="img-responsive" />
+                    if (ViewBag.SearchQuery != null)
+                    {
+                        <p>
+                            Din søgning: @ViewBag.SearchQuery - Gav: @Model.Count Resultat(er):
+                        </p>
+                    }
+                    foreach (ProductVM pvm in Model)
+                    {
+                        <div class="productListItem">
+                            <div>
+                                @pvm.Product.Name
                             </div>
-                            <div class="col-3">
-                                <table>
-                                    <tr>
-                                        <td>Varenummer</td>
-                                        <td>@pvm.Product.ID</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Pris</td>
-                                        <td>@pvm.Product.Price</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Leveringstid</td>
-                                        <td>2-3 Dage</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-3">
-                                <table>
-                                    <tr>
-                                        <td>Producent</td>
-                                        <td>@pvm.Manufacture.Name</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tilbud</td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Lager antal:</td>
-                                        <td>@pvm.Product.StorageAmount</td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <div class="col-3">
-                                <div>
-                                    <div class="@pvm.GetStatus()">
+                            <div class="row">
+                                <div class="col-3">
+                                    <img src="~/Content/Images/Products/@pvm.Product.Image" class="img-responsive" />
+                                </div>
+                                <div class="col-3">
+                                    <table>
+                                        <tr>
+                                            <td>Varenummer</td>
+                                            <td>@pvm.Product.ID</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pris</td>
+                                            <td>@pvm.Product.Price</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Leveringstid</td>
+                                            <td>2-3 Dage</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-3">
+                                    <table>
+                                        <tr>
+                                            <td>Producent</td>
+                                            <td>@pvm.Manufacture.Name</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Tilbud</td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lager antal:</td>
+                                            <td>@pvm.Product.StorageAmount</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="col-3">
+                                    <div>
+                                        <div class="@pvm.GetStatus()">
+                                        </div>
+                                        <a href="/Home/ShowProduct/@pvm.Product.ID">Se Mere</a>
                                     </div>
-                                    <a href="/Home/ShowProduct/@pvm.Product.ID">Se Mere</a>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
+                }
+                else
+                {
+                   <p>
+                       Din søgning fandt ingen resultater.
+                   </p>
                 }
             </div>
         </div>

@@ -1,0 +1,22 @@
+﻿<form method="post" action="/Home/SearchSubmit">
+    <div class="#search">
+        <div>
+            <span>Søgning</span>
+        </div>
+        <div>
+            <select name="categoryID">
+                <option value="0">Alle Produkter</option>
+                @foreach (Category category in ViewBag.Categories)
+                {
+                    <option value="@category.ID">@category.Name</option>
+                }
+            </select>
+            <p>Maxpris</p>
+            <input type="number" step=".01" placeholder="Maxpris..." name="maxPrice"/>
+            <p>Søgeord</p>
+            <input type="text" name="searchQuery" placeholder="Søgeord" required />
+            <br />
+            <input type="submit" value="Søg" />
+        </div>
+    </div>
+</form>
